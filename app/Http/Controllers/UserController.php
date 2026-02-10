@@ -26,7 +26,8 @@ class UserController extends Controller
         }
 
         if ($request->filled('email')) {
-            $query->where('email', $request->get('email'));
+            $email = $request->get('email');
+            $query->where('email', 'like', "%{$email}%");
         }
 
         if ($request->filled('username')) {

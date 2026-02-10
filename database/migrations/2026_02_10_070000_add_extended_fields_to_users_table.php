@@ -12,10 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->date('hiring_date')->nullable()->after('username');
-            $table->string('dui', 10)->unique()->after('hiring_date');
-            $table->string('phone_number')->nullable()->after('dui');
-            $table->date('birth_date')->after('phone_number');
+            if (! Schema::hasColumn('users', 'hiring_date')) {
+                $table->date('hiring_date')->nullable()->after('username');
+            }
+
+            if (! Schema::hasColumn('users', 'dui')) {
+                $table->string('dui', 10)->unique()->nullable()->after('hiring_date');
+            }
+
+            if (! Schema::hasColumn('users', 'phone_number')) {
+                $table->string('phone_number')->nullable()->after('dui');
+            }
+
+            if (! Schema::hasColumn('users', 'birth_date')) {
+                $table->date('birth_date')->nullable()->after('phone_number');
+            }
         });
     }
 
